@@ -49,6 +49,7 @@ func main() {
 	sort.Ints(elves)
 	reversed := reverse(elves)
 	fmt.Println("First: ", reversed[0])
+	fmt.Println("First 3 Elves combined: ", reversed[0]+reversed[1]+reversed[2])
 
 }
 
