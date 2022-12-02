@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	file, err := os.Open("assets/day1/input.txt")
+	file, err := os.Open("/home/lenak/Dokumente/Coding/Go/AdventOfCode/assets/day1/input.txt")
 	if err != nil {
 		panic(err)
 	}
