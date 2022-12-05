@@ -1,11 +1,9 @@
 package main
 
-import (
-	"testing"
-)
+import "testing"
 
 func BenchmarkMain(b *testing.B) {
 	main()
 }
 
-//0.005s
+//0.021s
