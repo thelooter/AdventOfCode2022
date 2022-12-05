@@ -1,35 +1,13 @@
 package main
 
 import (
-	"bufio"
+	"AdventOfCode/lib"
 	"fmt"
-	"os"
 )
 
 func main() {
 
-	file, err := os.Open("/home/lenak/Dokumente/Coding/Go/AdventOfCode/assets/day3/input.txt")
-	if err != nil {
-		panic(err)
-	}
-
-	defer func(file *os.File) {
-		err := file.Close()
-		if err != nil {
-			panic(err)
-		}
-	}(file)
-
-	scanner := bufio.NewScanner(file)
-	var lines []string
-
-	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
-	}
-
-	if err := scanner.Err(); err != nil {
-		panic(err)
-	}
+	lines := lib.ParseInputFile("/home/lenak/Dokumente/Coding/Go/AdventOfCode/assets/day3/input.txt")
 
 	var compartments [][2]string
 

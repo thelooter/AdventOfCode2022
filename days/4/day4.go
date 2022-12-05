@@ -1,37 +1,14 @@
 package main
 
 import (
-	"bufio"
+	"AdventOfCode/lib"
 	"fmt"
-	"os"
-	"strconv"
 	"strings"
 )
 
 func main() {
 
-	file, err := os.Open("/home/lenak/Dokumente/Coding/Go/AdventOfCode/assets/day4/input.txt")
-	if err != nil {
-		panic(err)
-	}
-
-	defer func(file *os.File) {
-		err := file.Close()
-		if err != nil {
-			panic(err)
-		}
-	}(file)
-
-	scanner := bufio.NewScanner(file)
-	var lines []string
-
-	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
-	}
-
-	if err := scanner.Err(); err != nil {
-		panic(err)
-	}
+	lines := lib.ParseInputFile("/home/lenak/Dokumente/Coding/Go/AdventOfCode/assets/day4/input.txt")
 
 	counter := 0
 
@@ -43,8 +20,8 @@ func main() {
 		leftParts := strings.Split(left, "-")
 		rightParts := strings.Split(right, "-")
 
-		leftStart, leftEnd := toInt(leftParts[0]), toInt(leftParts[1])
-		rightStart, rightEnd := toInt(rightParts[0]), toInt(rightParts[1])
+		leftStart, leftEnd := lib.StringToInt(leftParts[0]), lib.StringToInt(leftParts[1])
+		rightStart, rightEnd := lib.StringToInt(rightParts[0]), lib.StringToInt(rightParts[1])
 
 		var numArray [2][]int
 
@@ -77,8 +54,8 @@ Outer:
 		leftParts := strings.Split(left, "-")
 		rightParts := strings.Split(right, "-")
 
-		leftStart, leftEnd := toInt(leftParts[0]), toInt(leftParts[1])
-		rightStart, rightEnd := toInt(rightParts[0]), toInt(rightParts[1])
+		leftStart, leftEnd := lib.StringToInt(leftParts[0]), lib.StringToInt(leftParts[1])
+		rightStart, rightEnd := lib.StringToInt(rightParts[0]), lib.StringToInt(rightParts[1])
 
 		for i := leftStart; i <= leftEnd; i++ {
 			for j := rightStart; j <= rightEnd; j++ {
@@ -112,12 +89,4 @@ func containsInt(ints2 []int, i int) bool {
 		}
 	}
 	return false
-}
-
-func toInt(s string) int {
-	i, err := strconv.Atoi(s)
-	if err != nil {
-		panic(err)
-	}
-	return i
 }
