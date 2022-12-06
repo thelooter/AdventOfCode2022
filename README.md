@@ -13,3 +13,4 @@ These are my Solutions to the 2022 Advent of Code Event
 | 3   | 4ms    | 5ms    |
 | 4   | 20ms   | 21ms   |
 | 5   | 5ms    | 5ms    |
+| 6   | 11ms   | 50ms   |
