@@ -2,60 +2,81 @@ package main
 
 import (
 	"AdventOfCode/lib"
-	"fmt"
+	"strconv"
 	"strings"
 )
 
+var commands = lib.ParseInputFile("/home/lenak/Dokumente/Coding/Go/AdventOfCode/assets/day7/input.txt")
+var index = 0
+
+var total = 0
+var dirSizes []int
+
 func main() {
-	lines := lib.ParseInputFile("/home/lenak/Dokumente/Coding/Go/AdventOfCode/assets/day7/input.txt")
+	rootSize := computeNextDirSize()
+	missingSpace := 30_000_000 - (70_000_000 - rootSize)
+	best := 10000000000
 
-	root := New()
+	for _, size := range dirSizes {
+		if size > missingSpace && size < best {
+			best = size
+		}
+	}
 
-	var currentDir *Directory
-	//totalSize := 0
+	println("Part 1:", total, "Part 2:", best)
+}
 
-Outer:
-	for _, line := range lines {
+func computeNextDirSize() int {
+	size := 0
+	for {
+		command := peek()
+		index += 1
+		if command == "" {
+			return size
+		}
 
-		if strings.HasPrefix(line, "$ cd ") {
-			parsedDir := strings.TrimPrefix(line, "$ cd ")
-			if parsedDir == "/" {
-				currentDir = root
-			} else if parsedDir == ".." {
-				currentDir = currentDir.Parent
-			} else {
-				if found, dir := currentDir.ContainsChild(parsedDir); found {
-					currentDir = dir
-				} else {
-
-					panic("Directory not found")
-				}
+		if strings.HasPrefix(command, "$ cd ") {
+			dirName := command[5:]
+			if strings.HasPrefix(dirName, "..") {
+				return size
 			}
-			continue Outer
+
+			dirSize := computeNextDirSize()
+			dirSizes = append(dirSizes, dirSize)
+			if dirSize <= 100_000 {
+				total += dirSize
+			}
+			size += dirSize
 		}
 
-		if strings.HasPrefix(line, "$ ls") {
-			continue Outer
-		}
-
-		if strings.HasPrefix(line, "dir") {
-			parsedDir := strings.TrimPrefix(line, "dir ")
-			currentDir = currentDir.InsertDirectory(parsedDir, currentDir)
-		} else {
-			parsedFile := strings.Split(line, " ")
-			currentDir.InsertFile(parsedFile[1], lib.StringToInt(parsedFile[0]))
-		}
-
-	}
-
-	totalSize := 0
-
-	for _, el := range root.Children {
-
-		if el.Size() < 100000 {
-			totalSize += el.Size()
+		if strings.HasPrefix(command, "$ ls") {
+			size += computeFileListSize()
 		}
 	}
+}
 
-	fmt.Println(totalSize)
+func computeFileListSize() int {
+	size := 0
+	for {
+		command := peek()
+		if command == "" || strings.HasPrefix(command, "$") {
+			return size
+		}
+
+		index += 1
+		if strings.HasPrefix(command, "dir ") {
+			continue
+		}
+
+		parts := strings.Split(command, " ")
+		file, _ := strconv.Atoi(parts[0])
+		size += file
+	}
+}
+
+func peek() string {
+	if index >= len(commands) {
+		return ""
+	}
+	return commands[index]
 }
